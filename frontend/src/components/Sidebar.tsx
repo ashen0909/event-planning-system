@@ -37,7 +37,7 @@ export const Sidebar: React.FC = () => {
       {/* Logo/Title with Notifications */}
       <div className="p-6 border-b border-gray-200 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-blue-600">Event Plan</h1>
+          <h1 className="text-2xl font-bold text-blue-600">Eventora</h1>
           <p className="text-xs text-gray-500 mt-1">Manage your events</p>
         </div>
         <NotificationsDropdown />
