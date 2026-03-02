@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import jsPDF from 'jspdf';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Calendar, Users, CheckCircle, TrendingUp, Download } from 'lucide-react';
 import { api } from '../services/api';
@@ -99,17 +100,84 @@ export const AnalyticsPage: React.FC = () => {
   };
 
   const downloadReport = () => {
-    const reportData = JSON.stringify(analytics, null, 2);
-    const element = document.createElement('a');
-    element.setAttribute(
-      'href',
-      'data:text/plain;charset=utf-8,' + encodeURIComponent(reportData)
+    if (!analytics) return;
+
+    const doc = new jsPDF();
+    const lineHeight = 8;
+    let y = 15;
+
+    doc.setFontSize(16);
+    doc.text('Analytics & Reports', 14, y);
+    y += lineHeight + 4;
+
+    doc.setFontSize(11);
+    doc.text(`Total Events: ${analytics.totalEvents}`, 14, y);
+    y += lineHeight;
+    doc.text(`Published Events: ${analytics.publishedEvents}`, 14, y);
+    y += lineHeight;
+    doc.text(`Draft Events: ${analytics.draftEvents}`, 14, y);
+    y += lineHeight;
+    doc.text(`Total Guests (approx): ${analytics.totalGuests}`, 14, y);
+    y += lineHeight;
+
+    doc.text(`Total Budget: ${analytics.totalBudget.toLocaleString()}`, 14, y);
+    y += lineHeight;
+    doc.text(
+      `Total Expenses: ${analytics.totalExpenses.toLocaleString()}`,
+      14,
+      y
     );
-    element.setAttribute('download', 'analytics-report.json');
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    y += lineHeight;
+
+    const budgetRemaining = analytics.totalBudget - analytics.totalExpenses;
+    const budgetPercentage = (
+      (analytics.totalExpenses / analytics.totalBudget) *
+      100
+    ).toFixed(1);
+
+    doc.text(
+      `Remaining Budget: ${budgetRemaining.toLocaleString()}`,
+      14,
+      y
+    );
+    y += lineHeight;
+    doc.text(`Budget Used: ${budgetPercentage}%`, 14, y);
+    y += lineHeight + 4;
+
+    doc.setFontSize(12);
+    doc.text('Events by Month:', 14, y);
+    y += lineHeight;
+    doc.setFontSize(10);
+    analytics.eventsByMonth.forEach(({ month, count }) => {
+      doc.text(`- ${month}: ${count}`, 18, y);
+      y += lineHeight;
+    });
+
+    y += 2;
+    doc.setFontSize(12);
+    doc.text('Events by Status:', 14, y);
+    y += lineHeight;
+    doc.setFontSize(10);
+    analytics.eventsByStatus.forEach(({ status, count }) => {
+      doc.text(`- ${status}: ${count}`, 18, y);
+      y += lineHeight;
+    });
+
+    y += 2;
+    doc.setFontSize(12);
+    doc.text('Budget by Event (top 5):', 14, y);
+    y += lineHeight;
+    doc.setFontSize(10);
+    analytics.budgetByEvent.forEach(({ event, budget, expenses }) => {
+      doc.text(
+        `- ${event}: Budget ${budget.toLocaleString()}, Expenses ${expenses.toLocaleString()}`,
+        18,
+        y
+      );
+      y += lineHeight;
+    });
+
+    doc.save('analytics-report.pdf');
   };
 
   if (loading) {

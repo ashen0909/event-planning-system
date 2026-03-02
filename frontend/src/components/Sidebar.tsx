@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Users, Clock, DollarSign, LogOut, BarChart3 } from 'lucide-react';
+import { Calendar, Users, Clock, DollarSign, LogOut, BarChart3, Ticket as TicketIcon, MapPin } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { NotificationsDropdown } from './NotificationsDropdown';
@@ -17,6 +17,8 @@ export const Sidebar: React.FC = () => {
     { path: '/app/guests', icon: Users, label: 'Guests', color: 'text-purple-600' },
     { path: '/app/schedule', icon: Clock, label: 'Schedule & Tasks', color: 'text-orange-600' },
     { path: '/app/budget', icon: DollarSign, label: 'Budget & Vendors', color: 'text-green-600' },
+    { path: '/app/ticketing', icon: TicketIcon, label: 'Ticketing & Reg', color: 'text-pink-600' },
+    { path: '/app/venues', icon: MapPin, label: 'Venues', color: 'text-red-600' },
     { path: '/app/analytics', icon: BarChart3, label: 'Analytics', color: 'text-indigo-600' },
   ];
 

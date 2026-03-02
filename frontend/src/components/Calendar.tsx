@@ -37,7 +37,6 @@ export const Calendar: React.FC = () => {
   };
 
   const getEventsForDate = (day: number) => {
-    // Build a YYYY-MM-DD string in local time to avoid timezone-related off-by-one errors
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1; // 0-based
     const paddedMonth = month.toString().padStart(2, '0');

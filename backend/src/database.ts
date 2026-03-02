@@ -62,6 +62,7 @@ export const initializeDatabase = async () => {
     CREATE TABLE IF NOT EXISTS events (
       id TEXT PRIMARY KEY,
       owner_id TEXT NOT NULL,
+      venue_id TEXT,
       title TEXT NOT NULL,
       description TEXT,
       date TEXT NOT NULL,
@@ -74,6 +75,17 @@ export const initializeDatabase = async () => {
       FOREIGN KEY (owner_id) REFERENCES users(id)
     )
   `);
+
+  // Ensure new columns exist for older databases (lightweight migrations)
+  try {
+    const eventColumns = await allAsync(`PRAGMA table_info(events)`, []);
+    const hasVenueId = eventColumns.some((c: any) => c.name === 'venue_id');
+    if (!hasVenueId) {
+      await runAsync(`ALTER TABLE events ADD COLUMN venue_id TEXT`);
+    }
+  } catch (e) {
+    console.error('Events table migration failed:', e);
+  }
 
   // Create Guests table
   await runAsync(`
@@ -162,6 +174,54 @@ export const initializeDatabase = async () => {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id),
       FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create Venues table
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS venues (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      location TEXT,
+      capacity INTEGER,
+      price_per_day REAL,
+      contact_person TEXT,
+      contact_number TEXT,
+      availability_status TEXT DEFAULT 'Available',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  // Create Tickets table
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS tickets (
+      id TEXT PRIMARY KEY,
+      event_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      price REAL NOT NULL,
+      total_quantity INTEGER NOT NULL,
+      sold_quantity INTEGER DEFAULT 0,
+      sale_start_date TEXT,
+      sale_end_date TEXT,
+      status TEXT DEFAULT 'Active',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create Registrations table
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS registrations (
+      id TEXT PRIMARY KEY,
+      event_id TEXT NOT NULL,
+      ticket_id TEXT NOT NULL,
+      attendee_name TEXT NOT NULL,
+      attendee_email TEXT,
+      attendee_phone TEXT,
+      payment_status TEXT DEFAULT 'Pending',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+      FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE
     )
   `);
 

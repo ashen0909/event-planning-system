@@ -17,6 +17,7 @@ export const CalendarPage: React.FC = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState<CalendarEvent[]>([]);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export const CalendarPage: React.FC = () => {
 
   const handleDayClick = (day: number) => {
     const dayEvents = getEventsForDate(day);
+    setSelectedDay(day);
     setSelectedDate(dayEvents);
   };
 
@@ -199,12 +201,13 @@ export const CalendarPage: React.FC = () => {
         {/* Events Sidebar */}
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h3 className="text-xl font-semibold text-gray-900 mb-4">
-            {selectedDate.length > 0 ? 'Selected Date Events' : 'All Events'}
+            {selectedDay !== null ? 'Selected Date Events' : 'All Events'}
           </h3>
 
           <div className="space-y-4 max-h-96 overflow-y-auto">
-            {selectedDate.length > 0
-              ? selectedDate.map((event) => (
+            {selectedDay !== null ? (
+              selectedDate.length > 0 ? (
+                selectedDate.map((event) => (
                   <div
                     key={event.id}
                     onClick={() => handleEventClick(event.id)}
@@ -220,22 +223,29 @@ export const CalendarPage: React.FC = () => {
                     )}
                   </div>
                 ))
-              : events.slice(0, 5).map((event) => (
-                  <div
-                    key={event.id}
-                    onClick={() => handleEventClick(event.id)}
-                    className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition cursor-pointer"
-                  >
-                    <h4 className="font-semibold text-gray-900">{event.title}</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      📅 {new Date(event.date).toLocaleDateString()}
-                    </p>
-                    <p className="text-sm text-gray-600">⏰ {event.time}</p>
-                    {event.location && (
-                      <p className="text-sm text-gray-600 mt-2">📍 {event.location}</p>
-                    )}
-                  </div>
-                ))}
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  <p>No events scheduled for this date</p>
+                </div>
+              )
+            ) : (
+              events.slice(0, 5).map((event) => (
+                <div
+                  key={event.id}
+                  onClick={() => handleEventClick(event.id)}
+                  className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition cursor-pointer"
+                >
+                  <h4 className="font-semibold text-gray-900">{event.title}</h4>
+                  <p className="text-sm text-gray-600 mt-1">
+                    📅 {new Date(event.date).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-gray-600">⏰ {event.time}</p>
+                  {event.location && (
+                    <p className="text-sm text-gray-600 mt-2">📍 {event.location}</p>
+                  )}
+                </div>
+              ))
+            )}
           </div>
 
           {events.length === 0 && (

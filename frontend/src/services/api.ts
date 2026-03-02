@@ -69,4 +69,34 @@ export const budgetService = {
     api.delete(`/budget/${eventId}/expenses/${expenseId}`),
 };
 
+// Venues
+export const venueService = {
+  getAll: () => api.get('/venues'),
+  getById: (id: string) => api.get(`/venues/${id}`),
+  create: (data: any) => api.post('/venues', data),
+  update: (id: string, data: any) => api.put(`/venues/${id}`, data),
+  delete: (id: string) => api.delete(`/venues/${id}`),
+};
+
+// Tickets & Registrations
+export const ticketingService = {
+  // Tickets for an event
+  getTickets: (eventId: string) => api.get(`/events/${eventId}/tickets`),
+  createTicket: (eventId: string, data: any) =>
+    api.post(`/events/${eventId}/tickets`, data),
+  updateTicket: (eventId: string, ticketId: string, data: any) =>
+    api.put(`/events/${eventId}/tickets/${ticketId}`, data),
+  deleteTicket: (eventId: string, ticketId: string) =>
+    api.delete(`/events/${eventId}/tickets/${ticketId}`),
+
+  // Registrations for an event
+  getRegistrations: (eventId: string) => api.get(`/events/${eventId}/registrations`),
+  createRegistration: (eventId: string, data: any) =>
+    api.post(`/events/${eventId}/registrations`, data),
+  updateRegistration: (eventId: string, registrationId: string, data: any) =>
+    api.put(`/events/${eventId}/registrations/${registrationId}`, data),
+  deleteRegistration: (eventId: string, registrationId: string) =>
+    api.delete(`/events/${eventId}/registrations/${registrationId}`),
+};
+
 export default api;

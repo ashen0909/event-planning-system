@@ -4,10 +4,19 @@ import { X } from 'lucide-react';
 export interface FieldConfig {
   name: string;
   label: string;
-  type: 'text' | 'number' | 'select' | 'textarea' | 'password' | 'email' | 'date' | 'time';
+  type:
+    | 'text'
+    | 'number'
+    | 'select'
+    | 'textarea'
+    | 'password'
+    | 'email'
+    | 'date'
+    | 'time'
+    | 'tel';
   required?: boolean;
   placeholder?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: string; label: string; disabled?: boolean }[];
 }
 
 const Modal: React.FC<{
@@ -15,6 +24,7 @@ const Modal: React.FC<{
   title: string;
   fields: FieldConfig[];
   defaultValues?: Record<string, any>;
+  aboveFields?: React.ReactNode;
   onSubmit: (data: Record<string, any>) => void;
   onClose: () => void;
 }> = ({
@@ -24,11 +34,11 @@ const Modal: React.FC<{
   onSubmit,
   fields,
   defaultValues = {},
+  aboveFields,
 }) => {
   const [formData, setFormData] = useState<Record<string, any>>(defaultValues);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Keep form data in sync when opening the modal for editing
+  
   useEffect(() => {
     if (isOpen) {
       setFormData(defaultValues);
@@ -69,6 +79,7 @@ const Modal: React.FC<{
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {aboveFields}
           {fields.map((field) => (
             <div key={field.name}>
               <label htmlFor={field.name} className="block text-sm font-medium text-gray-700 mb-1">
@@ -98,7 +109,7 @@ const Modal: React.FC<{
                 >
                   <option value="">Select...</option>
                   {field.options?.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
+                    <option key={opt.value} value={opt.value} disabled={opt.disabled}>
                       {opt.label}
                     </option>
                   ))}
