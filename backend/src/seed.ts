@@ -29,7 +29,7 @@ const seedDatabase = async () => {
     // Insert regular user
     await runAsync(
       'INSERT INTO users (id, name, email, password_hash, role) VALUES (?, ?, ?, ?, ?)',
-      [userId, 'John Doe', 'user@example.com', userPassword, 'USER']
+      [userId, 'Ashen', 'user@example.com', userPassword, 'USER']
     );
 
     console.log('✅ User created: user@example.com / User@123');
@@ -110,13 +110,13 @@ const seedDatabase = async () => {
     await runAsync(
       `INSERT INTO tasks (id, event_id, title, priority, status, due_date, assigned_to)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [taskIds[0], eventId, 'Confirm guest list', 'High', 'Doing', '2024-06-01', 'John Doe']
+      [taskIds[0], eventId, 'Confirm guest list', 'High', 'Doing', '2024-06-01', 'Ashen']
     );
 
     await runAsync(
       `INSERT INTO tasks (id, event_id, title, priority, status, due_date, assigned_to)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [taskIds[1], eventId, 'Book venue', 'High', 'Done', '2024-05-01', 'John Doe']
+      [taskIds[1], eventId, 'Book venue', 'High', 'Done', '2024-05-01', 'Ashen']
     );
 
     console.log('✅ Sample tasks created');

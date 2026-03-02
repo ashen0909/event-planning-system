@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 export interface FieldConfig {
   name: string;
   label: string;
-  type: 'text' | 'number' | 'select' | 'textarea' | 'password' | 'email';
+  type: 'text' | 'number' | 'select' | 'textarea' | 'password' | 'email' | 'date' | 'time';
   required?: boolean;
   placeholder?: string;
   options?: { value: string; label: string }[];
@@ -28,6 +28,13 @@ const Modal: React.FC<{
   const [formData, setFormData] = useState<Record<string, any>>(defaultValues);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Keep form data in sync when opening the modal for editing
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(defaultValues);
+    }
+  }, [defaultValues, isOpen]);
+
   if (!isOpen) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -40,7 +47,6 @@ const Modal: React.FC<{
     setIsSubmitting(true);
     try {
       await onSubmit(formData);
-      setFormData({});
       onClose();
     } finally {
       setIsSubmitting(false);

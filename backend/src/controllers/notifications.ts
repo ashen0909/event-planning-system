@@ -4,7 +4,13 @@ import { runAsync, getAsync, allAsync } from '../database';
 
 export const getNotifications = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).userId;
+    const user = (req as any).user;
+
+    if (!user || !user.id) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const userId = user.id;
     const notifications = await allAsync(
       `SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC`,
       [userId]
@@ -18,7 +24,13 @@ export const getNotifications = async (req: Request, res: Response) => {
 export const markAsRead = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userId = (req as any).userId;
+    const user = (req as any).user;
+
+    if (!user || !user.id) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const userId = user.id;
 
     // Verify notification belongs to user
     const notification = await getAsync(
@@ -43,7 +55,13 @@ export const markAsRead = async (req: Request, res: Response) => {
 
 export const markAllAsRead = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).userId;
+    const user = (req as any).user;
+
+    if (!user || !user.id) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const userId = user.id;
     await runAsync(
       'UPDATE notifications SET is_read = 1 WHERE user_id = ?',
       [userId]
@@ -57,7 +75,13 @@ export const markAllAsRead = async (req: Request, res: Response) => {
 export const deleteNotification = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userId = (req as any).userId;
+    const user = (req as any).user;
+
+    if (!user || !user.id) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const userId = user.id;
 
     // Verify notification belongs to user
     const notification = await getAsync(
@@ -104,7 +128,13 @@ export const createNotification = async (
 
 export const getUnreadCount = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).userId;
+    const user = (req as any).user;
+
+    if (!user || !user.id) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const userId = user.id;
     const result = await getAsync(
       'SELECT COUNT(*) as count FROM notifications WHERE user_id = ? AND is_read = 0',
       [userId]

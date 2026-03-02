@@ -44,13 +44,12 @@ export const CalendarPage: React.FC = () => {
   };
 
   const getEventsForDate = (day: number) => {
-    const dateStr = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      day
-    )
-      .toISOString()
-      .split('T')[0];
+    // Build a YYYY-MM-DD string in local time to avoid timezone-related date shifts
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // 0-based
+    const paddedMonth = month.toString().padStart(2, '0');
+    const paddedDay = day.toString().padStart(2, '0');
+    const dateStr = `${year}-${paddedMonth}-${paddedDay}`;
 
     return events.filter((event) => event.date === dateStr);
   };

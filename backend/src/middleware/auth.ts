@@ -18,7 +18,11 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
       return res.status(401).json({ error: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret') as TokenPayload;
+    // Use the same default secret as the auth controller so tokens remain valid
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || '34ecc5f48fd9686c043abadd9afe4ec06d7cc06a32de838097aa3b1a6ef8a608'
+    ) as TokenPayload;
     req.user = decoded;
     next();
   } catch (error) {
