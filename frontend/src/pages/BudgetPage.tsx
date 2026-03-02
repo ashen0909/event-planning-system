@@ -193,20 +193,20 @@ export const BudgetPage: React.FC = () => {
         <Card title="Total Estimated">
           <div className="text-center">
             <p className="text-sm text-gray-500 mb-1">Total Estimated</p>
-            <p className="text-3xl font-bold text-green-600">${summary.totalEstimated.toFixed(2)}</p>
+            <p className="text-3xl font-bold text-green-600">Rs.{summary.totalEstimated.toFixed(2)}</p>
           </div>
         </Card>
         <Card title="Total Spent">
           <div className="text-center">
             <p className="text-sm text-gray-500 mb-1">Total Spent</p>
-            <p className="text-3xl font-bold text-blue-600">${summary.totalSpent.toFixed(2)}</p>
+            <p className="text-3xl font-bold text-blue-600">Rs.{summary.totalSpent.toFixed(2)}</p>
           </div>
         </Card>
         <Card title="Remaining">
           <div className="text-center">
             <p className="text-sm text-gray-500 mb-1">Remaining</p>
             <p className={`text-3xl font-bold ${summary.remaining >= 0 ? 'text-orange-600' : 'text-red-600'}`}>
-              ${summary.remaining.toFixed(2)}
+              Rs.{summary.remaining.toFixed(2)}
             </p>
           </div>
         </Card>
@@ -216,7 +216,7 @@ export const BudgetPage: React.FC = () => {
       <Card title="Budget Progress">
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-700">${summary.totalSpent.toFixed(2)} of ${summary.totalEstimated.toFixed(2)}</span>
+            <span className="text-gray-700">Rs.{summary.totalSpent.toFixed(2)} of Rs.{summary.totalEstimated.toFixed(2)}</span>
             <span className="text-gray-500">{percentSpent.toFixed(0)}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -257,7 +257,7 @@ export const BudgetPage: React.FC = () => {
                     {vendor.contact && <p className="text-sm text-gray-600">{vendor.contact}</p>}
                     {vendor.notes && <p className="text-sm text-gray-500 mt-1">{vendor.notes}</p>}
                     {vendor.price_estimate && (
-                      <p className="text-lg font-bold text-green-600 mt-2">${vendor.price_estimate.toFixed(2)}</p>
+                      <p className="text-lg font-bold text-green-600 mt-2">Rs.{vendor.price_estimate.toFixed(2)}</p>
                     )}
                   </div>
                   <div className="flex gap-2">
@@ -313,7 +313,7 @@ export const BudgetPage: React.FC = () => {
                 {expenses.map((expense) => (
                   <tr key={expense.id} className="hover:bg-gray-50">
                     <td className="px-6 py-3 text-sm font-medium text-gray-900">{expense.title}</td>
-                    <td className="px-6 py-3 text-sm font-semibold text-blue-600">${expense.amount.toFixed(2)}</td>
+                    <td className="px-6 py-3 text-sm font-semibold text-blue-600">Rs.{expense.amount.toFixed(2)}</td>
                     <td className="px-6 py-3 text-sm">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
                         expense.payment_status === 'Paid' 

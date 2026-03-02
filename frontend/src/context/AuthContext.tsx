@@ -17,12 +17,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in
+    // Check if user is already logged in on app initialization
     const checkAuth = async () => {
       try {
+        setIsLoading(true);
         const response = await authService.me();
         setUser(response.data);
-      } catch {
+      } catch (error) {
+        // User is not authenticated, clear the state
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -35,11 +37,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     const response = await authService.login(email, password);
     setUser(response.data.user);
+    // Verify session was created
+    try {
+      const meResponse = await authService.me();
+      setUser(meResponse.data);
+    } catch {
+      // If verification fails, still keep the login response data
+      setUser(response.data.user);
+    }
   };
 
   const logout = async () => {
-    await authService.logout();
-    setUser(null);
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+    }
   };
 
   return (

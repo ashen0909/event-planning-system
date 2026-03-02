@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_BASE = '/api';
 
 // Create axios instance with credentials
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE,
   withCredentials: true,
 });

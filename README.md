@@ -4,16 +4,19 @@ A modern, full-stack web application for planning and managing events with role-
 
 ## Features
 
-✨ **Core Features:**
-- 🔐 Secure JWT authentication with role-based access (ADMIN/USER)
-- 📅 Complete event management (CRUD operations)
-- 👥 Guest management with RSVP tracking
-- ⏰ Event scheduling with timeline view
-- 📋 Task management with kanban board
-- 💰 Budget tracking with vendor and expense management
-- 📊 Real-time budget progress visualization
-- 🎨 Modern, responsive UI with TailwindCSS
-- 🔔 Toast notifications for all actions
+ **Core Features:**
+Secure JWT authentication with role-based access (ADMIN/USER)
+Complete event management (CRUD operations)
+Guest management with RSVP tracking
+Event scheduling with timeline view
+Task management with kanban board
+Budget tracking with vendor and expense management
+Real-time budget progress visualization
+Modern, responsive UI with TailwindCSS
+Toast notifications for all actions
+Interactive calendar view with event clickable cells
+Smart notifications system with dropdown menu
+ Advanced analytics and reporting dashboard
 
 ## Project Structure
 
@@ -175,6 +178,13 @@ After seeding the database, use these credentials to login:
 - `POST /api/auth/logout` - Logout user
 - `GET /api/auth/me` - Get current user
 
+### Notifications
+- `GET /api/notifications` - Get all notifications for user
+- `GET /api/notifications/unread/count` - Get unread notification count
+- `PATCH /api/notifications/:id/read` - Mark notification as read
+- `PATCH /api/notifications/read-all` - Mark all notifications as read
+- `DELETE /api/notifications/:id` - Delete notification
+
 ### Events
 - `GET /api/events` - Get all events (filtered by role)
 - `POST /api/events` - Create event
@@ -209,6 +219,7 @@ After seeding the database, use these credentials to login:
 - `POST /api/budget/:eventId/expenses` - Add expense
 - `PUT /api/budget/:eventId/expenses/:expenseId` - Update expense
 - `DELETE /api/budget/:eventId/expenses/:expenseId` - Delete expense
+
 
 ## Features in Detail
 
@@ -245,6 +256,28 @@ After seeding the database, use these credentials to login:
 - Visual progress bar for spending
 - Budget summary dashboard
 
+### 6. Notifications System
+- Real-time notification alerts for all events
+- Persistent notification storage
+- Notification dropdown with unread count badge
+- Mark as read and delete functionality
+- Notification polling every 30 seconds
+
+### 7. Calendar View
+- Interactive calendar showing all events
+- Clickable event cells for navigation
+- Month navigation controls
+- Event details sidebar
+- Today highlight indicator
+
+### 8. Advanced Analytics & Reporting
+- Event statistics and trends
+- Budget analysis and spending patterns
+- Event status distribution charts
+- Monthly event timeline
+- Budget vs expenses comparison
+- Downloadable analytics reports
+
 ## Tech Stack
 
 ### Backend
@@ -267,21 +300,21 @@ After seeding the database, use these credentials to login:
 
 ## Best Practices Implemented
 
-✅ **Security:**
+**Security:**
 - Password hashing with bcryptjs
 - JWT token validation
 - Protected API endpoints
 - CORS configuration
 - HttpOnly cookies
 
-✅ **Code Quality:**
+**Code Quality:**
 - TypeScript for type safety
 - Modular component structure
 - Separation of concerns
 - Error handling and validation
 - Consistent naming conventions
 
-✅ **UX/UI:**
+**UX/UI:**
 - Responsive design
 - Loading states
 - Empty states
@@ -289,7 +322,7 @@ After seeding the database, use these credentials to login:
 - Form validation
 - Smooth transitions
 
-✅ **Performance:**
+**Performance:**
 - Lazy loading
 - Code splitting with React Router
 - Optimized database queries
@@ -317,23 +350,10 @@ If ports 5000 or 5173 are already in use:
 
 ## Future Enhancements
 
-- 📱 Mobile app with React Native
-- 📧 Email notifications
-- 🔔 Real-time updates with WebSocket
-- 📊 Advanced analytics and reporting
-- 🗂️ File upload for receipts
-- 🤝 Collaborative event planning
-- 🌍 Multi-language support
-- 📅 Calendar integration
+Mobile app with React Native
+Email notifications
+Real-time updates with WebSocket
+File upload for receipts
+Collaborative event planning
+Multi-language support
 
-## License
-
-MIT License - feel free to use this project for personal or commercial purposes.
-
-## Support
-
-For issues or questions, please create an issue in the repository.
-
----
-
-**Built with ❤️ using React, Node.js, and TypeScript**

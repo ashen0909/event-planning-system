@@ -7,6 +7,7 @@ import eventsRoutes from './routes/events';
 import guestsRoutes from './routes/guests';
 import scheduleRoutes from './routes/schedule';
 import budgetRoutes from './routes/budget';
+import notificationsRoutes from './routes/notifications';
 import { authMiddleware } from './middleware/auth';
 
 require('dotenv').config();
@@ -35,6 +36,7 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/guests', guestsRoutes);
 app.use('/api/schedule', scheduleRoutes);
 app.use('/api/budget', budgetRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 // Health check
 app.get('/api/health', (req: Request, res: Response) => {

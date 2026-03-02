@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Users, Clock, DollarSign, LogOut } from 'lucide-react';
+import { Calendar, Users, Clock, DollarSign, LogOut, BarChart3 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { NotificationsDropdown } from './NotificationsDropdown';
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -12,9 +13,11 @@ export const Sidebar: React.FC = () => {
 
   const menuItems = [
     { path: '/app/events', icon: Calendar, label: 'Events', color: 'text-blue-600' },
+    { path: '/app/calendar', icon: Calendar, label: 'Calendar', color: 'text-cyan-600' },
     { path: '/app/guests', icon: Users, label: 'Guests', color: 'text-purple-600' },
     { path: '/app/schedule', icon: Clock, label: 'Schedule & Tasks', color: 'text-orange-600' },
     { path: '/app/budget', icon: DollarSign, label: 'Budget & Vendors', color: 'text-green-600' },
+    { path: '/app/analytics', icon: BarChart3, label: 'Analytics', color: 'text-indigo-600' },
   ];
 
   const handleLogout = async () => {
@@ -29,14 +32,17 @@ export const Sidebar: React.FC = () => {
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 h-screen flex flex-col sticky top-0">
-      {/* Logo/Title */}
-      <div className="p-6 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-blue-600">Event Plan</h1>
-        <p className="text-xs text-gray-500 mt-1">Manage your events</p>
+      {/* Logo/Title with Notifications */}
+      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-blue-600">Event Plan</h1>
+          <p className="text-xs text-gray-500 mt-1">Manage your events</p>
+        </div>
+        <NotificationsDropdown />
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 px-4 py-4 space-y-2">
         {menuItems.map(({ path, icon: Icon, label, color }) => {
           const isActive = location.pathname === path;
           return (
