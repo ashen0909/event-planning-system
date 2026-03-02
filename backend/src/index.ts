@@ -8,6 +8,9 @@ import guestsRoutes from './routes/guests';
 import scheduleRoutes from './routes/schedule';
 import budgetRoutes from './routes/budget';
 import notificationsRoutes from './routes/notifications';
+import venuesRoutes from './routes/venues';
+import ticketsRoutes from './routes/tickets';
+import registrationsRoutes from './routes/registrations';
 import { createNotification } from './controllers/notifications';
 import { authMiddleware } from './middleware/auth';
 
@@ -132,6 +135,9 @@ app.use('/api/guests', guestsRoutes);
 app.use('/api/schedule', scheduleRoutes);
 app.use('/api/budget', budgetRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api/venues', venuesRoutes);
+app.use('/api/events/:eventId/tickets', ticketsRoutes);
+app.use('/api/events/:eventId/registrations', registrationsRoutes);
 
 // Health check
 app.get('/api/health', (req: Request, res: Response) => {

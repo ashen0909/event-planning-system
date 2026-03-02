@@ -32,7 +32,7 @@ export const LoginPage: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-blue-600 mb-2">Event Plan</h1>
+          <h1 className="text-4xl font-bold text-blue-600 mb-2">Eventora</h1>
           <p className="text-gray-500">Manage your events with ease</p>
         </div>
 
@@ -95,7 +95,7 @@ export const LoginPage: React.FC = () => {
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-500 mt-6">
-          Event planning system powered by React & Node.js
+          Event planning system powered by ©Eventora 2026
         </p>
       </div>
     </div>

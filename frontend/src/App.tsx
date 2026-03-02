@@ -13,6 +13,8 @@ import { SchedulePage } from './pages/SchedulePage';
 import { BudgetPage } from './pages/BudgetPage';
 import { CalendarPage } from './pages/CalendarPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
+import { VenuesPage } from './pages/VenuesPage';
+import { TicketingPage } from './pages/TicketingPage';
 import './index.css';
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -70,6 +72,22 @@ function App() {
                         element={
                           <AppLayout>
                             <BudgetPage />
+                          </AppLayout>
+                        }
+                      />
+                      <Route
+                        path="ticketing"
+                        element={
+                          <AppLayout>
+                            <TicketingPage />
+                          </AppLayout>
+                        }
+                      />
+                      <Route
+                        path="venues"
+                        element={
+                          <AppLayout>
+                            <VenuesPage />
                           </AppLayout>
                         }
                       />

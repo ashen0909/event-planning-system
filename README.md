@@ -4,19 +4,21 @@ A modern, full-stack web application for planning and managing events with role-
 
 ## Features
 
- **Core Features:**
-Secure JWT authentication with role-based access (ADMIN/USER)
-Complete event management (CRUD operations)
-Guest management with RSVP tracking
-Event scheduling with timeline view
-Task management with kanban board
-Budget tracking with vendor and expense management
-Real-time budget progress visualization
-Modern, responsive UI with TailwindCSS
-Toast notifications for all actions
-Interactive calendar view with event clickable cells
-Smart notifications system with dropdown menu
- Advanced analytics and reporting dashboard
+**Core Features**
+- Secure JWT authentication with role-based access (ADMIN/USER)
+- Complete event management (CRUD operations)
+- Guest management with RSVP tracking
+- Event scheduling with timeline view
+- Task management with kanban board
+- Budget tracking with vendor and expense management
+- Real-time budget progress visualization
+- Modern, responsive UI with TailwindCSS
+- Toast notifications for all actions
+- Interactive calendar view with clickable events
+- Smart notifications system with slide-in notifications panel
+- Advanced analytics and reporting dashboard with PDF export
+- Venue management with availability tracking (Available / Booked / Maintenance)
+- Event ticketing and registration (multiple ticket types, capacities, payment status tracking)
 
 ## Project Structure
 
@@ -94,7 +96,10 @@ npm run seed
 This will create:
 - Admin user: `admin@example.com` / `Admin@123`
 - Regular user: `user@example.com` / `User@123`
-- Sample event, guests, schedule, tasks, vendors, and expenses
+- Sample venues with different availability states
+- Sample events linked to venues
+- Sample guests, schedule, tasks, vendors, and expenses
+- Sample tickets and registrations for ticketing and reporting
 
 5. Start the backend server:
 ```bash
@@ -220,10 +225,30 @@ After seeding the database, use these credentials to login:
 - `PUT /api/budget/:eventId/expenses/:expenseId` - Update expense
 - `DELETE /api/budget/:eventId/expenses/:expenseId` - Delete expense
 
+### Venues
+- `GET /api/venues` - Get all venues
+- `POST /api/venues` - Create venue
+- `GET /api/venues/:id` - Get venue by ID
+- `PUT /api/venues/:id` - Update venue
+- `DELETE /api/venues/:id` - Delete venue
+
+### Tickets
+- `GET /api/events/:eventId/tickets` - Get ticket types for an event
+- `POST /api/events/:eventId/tickets` - Create ticket type
+- `GET /api/events/:eventId/tickets/:ticketId` - Get ticket type by ID
+- `PUT /api/events/:eventId/tickets/:ticketId` - Update ticket type
+- `DELETE /api/events/:eventId/tickets/:ticketId` - Delete ticket type
+
+### Registrations
+- `GET /api/events/:eventId/registrations` - Get registrations for an event
+- `POST /api/events/:eventId/registrations` - Create registration
+- `PUT /api/events/:eventId/registrations/:registrationId` - Update registration
+- `DELETE /api/events/:eventId/registrations/:registrationId` - Delete registration
+
 
 ## Features in Detail
 
-### 1. Authentication & Authorization
+### 1. Authentication & Authorization (login)
 - JWT-based authentication
 - Secure password hashing with bcryptjs
 - Role-based access control (ADMIN/USER)
@@ -255,28 +280,41 @@ After seeding the database, use these credentials to login:
 - Real-time budget calculation
 - Visual progress bar for spending
 - Budget summary dashboard
+ 
+### 6. Venue Management
+- Create and manage venues with key details (capacity, price per day, contacts)
+- Availability tracking (Available, Booked, Maintenance)
+- Events can be linked to venues and automatically mark them as booked
+- Deleting or changing events releases venues when appropriate
 
-### 6. Notifications System
+### 7. Ticketing and Registration
+- Multiple ticket types per event (VIP, Standard, etc.)
+- Ticket capacity, sale window, and automatic SoldOut/Closed status
+- Registration management with attendee details and payment status
+- Ticket progress bar segmented by Paid / Pending / Cancelled registrations
+- Derived revenue and ticket performance metrics
+
+### 8. Notifications System
 - Real-time notification alerts for all events
 - Persistent notification storage
-- Notification dropdown with unread count badge
+- Notification bell with unread count badge
 - Mark as read and delete functionality
 - Notification polling every 30 seconds
 
-### 7. Calendar View
+### 9. Calendar View
 - Interactive calendar showing all events
 - Clickable event cells for navigation
 - Month navigation controls
 - Event details sidebar
 - Today highlight indicator
 
-### 8. Advanced Analytics & Reporting
+### 10. Advanced Analytics & Reporting
 - Event statistics and trends
 - Budget analysis and spending patterns
 - Event status distribution charts
 - Monthly event timeline
 - Budget vs expenses comparison
-- Downloadable analytics reports
+- Downloadable analytics reports as PDF
 
 ## Tech Stack
 
@@ -348,12 +386,94 @@ If ports 5000 or 5173 are already in use:
 - Check credentials: admin@example.com / Admin@123
 - Clear browser cookies and try again
 
+# Git Workflow Guide
+
+## Creating a New Branch
+
+Create and switch to a new branch:
+
+```bash
+git checkout -b develop
+```
+
+Push branch to GitHub:
+
+```bash
+git push -u origin develop
+```
+
+---
+
+## Adding New Changes and Committing
+
+Stage all files:
+
+```bash
+git add .
+```
+
+Commit changes:
+
+```bash
+git commit -m "feat: add ticketing and venue management modules"
+```
+
+Push to remote repository:
+
+```bash
+git push
+```
+
+---
+
+## Conventional Commit Format
+
+This project follows Conventional Commits.
+
+### Commit Types
+
+- feat: New feature
+- fix: Bug fix
+- refactor: Code improvement
+- docs: Documentation update
+- style: UI or formatting change
+- chore: Maintenance task
+- perf: Performance improvement
+- test: Testing updates
+
+### Example Commits
+
+```bash
+feat: implement ticketing system
+fix: resolve venue availability update issue
+docs: update README with Git workflow
+refactor: optimize budget calculation
+```
+
+---
+
+## Example of a Detailed Commit
+
+```bash
+git commit
+
+feat: implement ticketing and venue management modules
+
+- Added multiple ticket types per event
+- Implemented registration and payment tracking
+- Added venue availability management
+- Linked events with venues
+- Fixed minor validation issues
+```
+
+---
+
 ## Future Enhancements
 
-Mobile app with React Native
-Email notifications
-Real-time updates with WebSocket
-File upload for receipts
-Collaborative event planning
-Multi-language support
+- Mobile app with React Native
+- Email notifications
+- Real-time updates with WebSocket
+- File upload for receipts
+- Collaborative event planning
+- Multi-language support
 

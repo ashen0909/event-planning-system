@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { eventService } from '../services/api';
+import { eventService, venueService } from '../services/api';
 import { useToast } from '../context/ToastContext';
-import { Event } from '../types';
+import { Event, Venue } from '../types';
 import { Modal, FieldConfig } from '../components/Modal';
 import { Card, Button } from '../components/Common';
+import { useNavigate } from 'react-router-dom';
 
 export const EventsPage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [venues, setVenues] = useState<Venue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const { addToast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadEvents();
+    loadVenues();
   }, []);
 
   const loadEvents = async () => {
@@ -25,6 +29,16 @@ export const EventsPage: React.FC = () => {
       addToast(error.response?.data?.error || 'Failed to load events', 'error');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadVenues = async () => {
+    try {
+      const response = await venueService.getAll();
+      setVenues(response.data);
+    } catch (error: any) {
+      // Venues are optional for events; keep the page usable
+      console.error('Failed to load venues:', error);
     }
   };
 
@@ -55,11 +69,40 @@ export const EventsPage: React.FC = () => {
     }
   };
 
+  const venueOptions = useMemo(() => {
+    const currentVenueId = (editingEvent as any)?.venue_id as string | undefined;
+
+    return venues.map((v) => {
+      const isSelectable =
+        v.availability_status === 'Available' ||
+        (currentVenueId && v.id === currentVenueId);
+
+      const labelParts = [
+        v.name,
+        v.location ? `(${v.location})` : '',
+        v.capacity ? `• ${v.capacity} cap` : '',
+        `• ${v.availability_status}`,
+      ].filter(Boolean);
+
+      return {
+        value: v.id,
+        label: labelParts.join(' '),
+        disabled: !isSelectable,
+      };
+    });
+  }, [venues, editingEvent]);
+
   const modalFields: FieldConfig[] = [
     { name: 'title', label: 'Event Title', type: 'text', required: true, placeholder: 'e.g., Wedding' },
     { name: 'description', label: 'Description', type: 'textarea', placeholder: 'Event details...' },
     { name: 'date', label: 'Date', type: 'date', required: true },
     { name: 'time', label: 'Time', type: 'time', required: true },
+    {
+      name: 'venue_id',
+      label: 'Venue',
+      type: 'select',
+      options: venueOptions,
+    },
     { name: 'location', label: 'Location', type: 'text', placeholder: 'Event venue...' },
     {
       name: 'status',
@@ -72,6 +115,52 @@ export const EventsPage: React.FC = () => {
       ],
     },
   ];
+
+  const modalAboveFields = (
+    <div className="space-y-2">
+      {venues.length === 0 ? (
+        <div className="p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm text-yellow-900">
+          <p className="font-semibold">No venues found.</p>
+          <p className="text-xs mt-1 text-yellow-800">
+            Add a venue first, then come back to create an event.
+          </p>
+          <div className="mt-2 flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setIsModalOpen(false);
+                setEditingEvent(null);
+                navigate('/app/venues');
+              }}
+              className="px-3 py-1.5 bg-yellow-600 text-white rounded-md text-xs hover:bg-yellow-700 transition"
+            >
+              Go to Venues
+            </button>
+            <button
+              type="button"
+              onClick={loadVenues}
+              className="px-3 py-1.5 border border-yellow-300 text-yellow-900 rounded-md text-xs hover:bg-yellow-100 transition"
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-gray-500">
+            Select a venue (only available venues can be chosen).
+          </p>
+          <button
+            type="button"
+            onClick={loadVenues}
+            className="text-xs text-blue-600 hover:text-blue-800"
+          >
+            Refresh venues
+          </button>
+        </div>
+      )}
+    </div>
+  );
 
   if (isLoading) {
     return (
@@ -162,6 +251,7 @@ export const EventsPage: React.FC = () => {
         }}
         onSubmit={handleCreateOrUpdate}
         fields={modalFields}
+        aboveFields={modalAboveFields}
         defaultValues={editingEvent || {}}
       />
     </div>
