@@ -19,6 +19,7 @@ A modern, full-stack web application for planning and managing events with role-
 - Advanced analytics and reporting dashboard with PDF export
 - Venue management with availability tracking (Available / Booked / Maintenance)
 - Event ticketing and registration (multiple ticket types, capacities, payment status tracking)
+- Sponsor management with sponsorship deals, benefits, and payment tracking
 
 ## Project Structure
 
@@ -245,6 +246,20 @@ After seeding the database, use these credentials to login:
 - `PUT /api/events/:eventId/registrations/:registrationId` - Update registration
 - `DELETE /api/events/:eventId/registrations/:registrationId` - Delete registration
 
+### Sponsors
+- `GET /api/sponsors` - Get sponsors (all for admin, own for user)
+- `POST /api/sponsors` - Create sponsor
+- `GET /api/sponsors/:id` - Get sponsor by ID
+- `PUT /api/sponsors/:id` - Update sponsor
+- `DELETE /api/sponsors/:id` - Delete sponsor
+- `GET /api/sponsors/:id/deals` - Get all sponsorship deals for a sponsor (history)
+
+### Sponsorship Deals
+- `GET /api/events/:eventId/sponsorships` - Get sponsorship deals for an event
+- `POST /api/events/:eventId/sponsorships` - Create sponsorship deal
+- `PUT /api/events/:eventId/sponsorships/:dealId` - Update sponsorship deal
+- `DELETE /api/events/:eventId/sponsorships/:dealId` - Delete sponsorship deal
+
 
 ## Features in Detail
 
@@ -294,21 +309,30 @@ After seeding the database, use these credentials to login:
 - Ticket progress bar segmented by Paid / Pending / Cancelled registrations
 - Derived revenue and ticket performance metrics
 
-### 8. Notifications System
+### 8. Sponsor Management
+- Maintain a sponsor list with company type and contact details
+- Link sponsors to specific events via sponsorship deals
+- Track sponsorship amount or package (Gold/Silver/Bronze/Custom)
+- Record benefits such as banners, social media posts, and stage mentions
+- Deal status tracking (Proposed, Confirmed, Paid, Cancelled)
+- Payment status tracking (Pending, Paid)
+- Sponsor history view showing all events sponsored by a sponsor
+
+### 9. Notifications System
 - Real-time notification alerts for all events
 - Persistent notification storage
 - Notification bell with unread count badge
 - Mark as read and delete functionality
 - Notification polling every 30 seconds
 
-### 9. Calendar View
+### 10. Calendar View
 - Interactive calendar showing all events
 - Clickable event cells for navigation
 - Month navigation controls
 - Event details sidebar
 - Today highlight indicator
 
-### 10. Advanced Analytics & Reporting
+### 11. Advanced Analytics & Reporting
 - Event statistics and trends
 - Budget analysis and spending patterns
 - Event status distribution charts
