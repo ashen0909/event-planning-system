@@ -225,5 +225,38 @@ export const initializeDatabase = async () => {
     )
   `);
 
+  // Create Sponsors table
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS sponsors (
+      id TEXT PRIMARY KEY,
+      owner_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      company_type TEXT,
+      contact_person TEXT,
+      contact_email TEXT,
+      contact_phone TEXT,
+      notes TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (owner_id) REFERENCES users(id)
+    )
+  `);
+
+  // Create SponsorshipDeals table
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS sponsorship_deals (
+      id TEXT PRIMARY KEY,
+      sponsor_id TEXT NOT NULL,
+      event_id TEXT NOT NULL,
+      amount REAL,
+      package TEXT,
+      benefits TEXT,
+      deal_status TEXT DEFAULT 'Proposed',
+      payment_status TEXT DEFAULT 'Pending',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (sponsor_id) REFERENCES sponsors(id) ON DELETE CASCADE,
+      FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+    )
+  `);
+
   console.log('Database initialized successfully');
 };

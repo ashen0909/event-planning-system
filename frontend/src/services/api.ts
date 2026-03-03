@@ -99,4 +99,24 @@ export const ticketingService = {
     api.delete(`/events/${eventId}/registrations/${registrationId}`),
 };
 
+// Sponsors & Sponsorships
+export const sponsorService = {
+  getAll: () => api.get('/sponsors'),
+  getById: (id: string) => api.get(`/sponsors/${id}`),
+  create: (data: any) => api.post('/sponsors', data),
+  update: (id: string, data: any) => api.put(`/sponsors/${id}`, data),
+  delete: (id: string) => api.delete(`/sponsors/${id}`),
+  getDealsBySponsor: (id: string) => api.get(`/sponsors/${id}/deals`),
+};
+
+export const sponsorshipService = {
+  getDealsForEvent: (eventId: string) => api.get(`/events/${eventId}/sponsorships`),
+  createDeal: (eventId: string, data: any) =>
+    api.post(`/events/${eventId}/sponsorships`, data),
+  updateDeal: (eventId: string, dealId: string, data: any) =>
+    api.put(`/events/${eventId}/sponsorships/${dealId}`, data),
+  deleteDeal: (eventId: string, dealId: string) =>
+    api.delete(`/events/${eventId}/sponsorships/${dealId}`),
+};
+
 export default api;

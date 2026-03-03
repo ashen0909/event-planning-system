@@ -353,7 +353,7 @@ export const AnalyticsPage: React.FC = () => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-600">Total Budget</span>
                 <span className="text-2xl font-bold text-gray-900">
-                  ${analytics.totalBudget.toLocaleString()}
+                  Rs.{analytics.totalBudget.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -362,7 +362,7 @@ export const AnalyticsPage: React.FC = () => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-600">Total Expenses</span>
                 <span className="text-2xl font-bold text-red-600">
-                  ${analytics.totalExpenses.toLocaleString()}
+                  Rs.{analytics.totalExpenses.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -371,7 +371,7 @@ export const AnalyticsPage: React.FC = () => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-600">Remaining Budget</span>
                 <span className="text-2xl font-bold text-green-600">
-                  ${budgetRemaining.toLocaleString()}
+                  Rs.{budgetRemaining.toLocaleString()}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
@@ -389,13 +389,13 @@ export const AnalyticsPage: React.FC = () => {
               <div>
                 <p className="text-sm text-gray-600">Avg. Budget/Event</p>
                 <p className="text-xl font-bold text-gray-900">
-                  ${(analytics.totalBudget / analytics.totalEvents).toLocaleString()}
+                  Rs.{(analytics.totalBudget / analytics.totalEvents).toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-gray-600">Avg. Expenses/Event</p>
                 <p className="text-xl font-bold text-gray-900">
-                  ${(analytics.totalExpenses / analytics.totalEvents).toLocaleString()}
+                  Rs.{(analytics.totalExpenses / analytics.totalEvents).toLocaleString()}
                 </p>
               </div>
             </div>

@@ -27,7 +27,7 @@ export const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET || '34ecc5f48fd9686c043abadd9afe4ec06d7cc06a32de838097aa3b1a6ef8a608',
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' } as any
     );
 
@@ -103,7 +103,7 @@ export const register = async (req: Request, res: Response) => {
 
     const token = jwt.sign(
       { id: userId, email, role },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET || '34ecc5f48fd9686c043abadd9afe4ec06d7cc06a32de838097aa3b1a6ef8a608',
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' } as any
     );
 

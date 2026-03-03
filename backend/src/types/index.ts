@@ -111,6 +111,30 @@ export interface Registration {
   created_at?: string;
 }
 
+export interface Sponsor {
+  id: string;
+  owner_id: string;
+  name: string;
+  company_type?: string;
+  contact_person?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  notes?: string;
+  created_at?: string;
+}
+
+export interface SponsorshipDeal {
+  id: string;
+  sponsor_id: string;
+  event_id: string;
+  amount?: number;
+  package?: string;
+  benefits?: string;
+  deal_status: 'Proposed' | 'Confirmed' | 'Paid' | 'Cancelled';
+  payment_status: 'Pending' | 'Paid';
+  created_at?: string;
+}
+
 export interface AuthRequest {
   email: string;
   password: string;
